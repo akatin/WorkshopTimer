@@ -1,0 +1,30 @@
+/*body {
+	width: 900px;
+	max-width: 900px;
+	margin-top: 0;
+	margin-bottom: 0;
+	margin-left: auto;
+	margin-right: auto;	
+}*/
+
+
+
+
+img{
+	display: block;
+	width: auto;
+	margin: 20px;
+	padding: 0;
+}
+
+
+ol li{
+   margin-top: 0.5em;
+   margin-bottom: 1.5em;
+   }
+
+ul li{
+   margin-top: 0.5em;
+   margin-bottom: 0.5em;
+   }
+

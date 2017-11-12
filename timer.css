@@ -1,0 +1,351 @@
+/*body {
+	width: 900px;
+	max-width: 900px;
+	margin-top: 0;
+	margin-bottom: 0;
+	margin-left: auto;
+	margin-right: auto;	
+}*/
+
+div#timerdiv{
+	font-family: "Arial", "‚l‚r ‚oƒSƒVƒbƒN", "Osaka", sans-selif;
+	/*font-size: 330px;*/
+	text-align: center;
+	display: block;
+	position: absolute;
+ 	/*top: 70px;
+	left: 360px;*/
+}
+
+div#explanation{
+	font-family: "Arial", "‚l‚r ‚oƒSƒVƒbƒN", "Osaka", sans-selif;
+	font-weight: bold;
+	text-align: center;
+	/*font-size: 80pt;*/
+ 	/*margin-bottom: 20pt;*/
+	margin: 0;
+	padding: 0;
+	display: block;
+	position: absolute;
+	/*width: 100%;*/
+ 	/*top: 450px;*/
+	/*left: 0px;*/
+}
+
+div#control{
+	display: block;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	/*border: solid;*/
+}
+
+div#ctrl_parts{
+	display: block;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	margin: 0;
+	padding: 0;
+}
+
+div#setting_parts{
+	display: block;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	margin: 0;
+	padding: 0;
+}
+
+
+img#ctrl_start_pause{
+	display: block;
+	position: absolute;
+	height: 100%;
+	width: auto;
+	top: 0px;
+	margin: 0;
+	padding: 0;
+}
+
+
+img#ctrl_reset{
+	display: block;
+	position: absolute;
+	height: 100%;
+	width: auto;
+	top: 0px;
+	margin: 0;
+	padding: 0;
+}
+
+img#ctrl_open_setting{
+	display: block;
+	position: absolute;
+	top: 0px;
+	height: 100%;
+	width: auto;
+	margin: 0;
+	padding: 0;
+}
+
+
+
+img#ctrl_1{
+	display: block;
+	position: absolute;
+	height: 50%;
+	width: auto;
+	margin: 0;
+	padding: 0;
+}
+
+img#ctrl_2{
+	display: block;
+	position: absolute;
+	height: 50%;
+	width: auto;
+	margin: 0;
+	padding: 0;
+}
+
+img#ctrl_3{
+	display: block;
+	position: absolute;
+	height: 50%;
+	width: auto;
+	margin: 0;
+	padding: 0;
+}
+
+img#ctrl_4{
+	display: block;
+	position: absolute;
+	height: 50%;
+	width: auto;
+	margin: 0;
+	padding: 0;
+}
+
+img#ctrl_5{
+	display: block;
+	position: absolute;
+	height: 50%;
+	width: auto;
+	margin: 0;
+	padding: 0;
+}
+img#ctrl_6{
+	display: block;
+	position: absolute;
+	height: 50%;
+	width: auto;
+	margin: 0;
+	padding: 0;
+}
+img#ctrl_7{
+	display: block;
+	position: absolute;
+	height: 50%;
+	width: auto;
+	margin: 0;
+	padding: 0;
+}
+img#ctrl_8{
+	display: block;
+	position: absolute;
+	height: 50%;
+	width: auto;
+	margin: 0;
+	padding: 0;
+}
+img#ctrl_9{
+	display: block;
+	position: absolute;
+	height: 50%;
+	width: auto;
+	margin: 0;
+	padding: 0;
+}
+img#ctrl_0{
+	display: block;
+	position: absolute;
+	height: 50%;
+	width: auto;
+	margin: 0;
+	padding: 0;
+}
+
+div#ctrl_numbers{
+	display: block;
+	position: absolute;
+	height: 100%;
+	width: auto;
+	top: 0px;
+	margin: 0;
+	padding: 0;
+}
+
+img#setting_soundtest{
+	display: block;
+	position: absolute;
+	top: 0px;
+	height: 100%;
+	width: auto;
+	margin: 0;
+	padding: 0;
+}
+img#setting_openwindow{
+	display: block;
+	position: absolute;
+	top: 0px;
+	height: 100%;
+	width: auto;
+	margin: 0;
+	padding: 0;
+}
+img#setting_save{
+	display: block;
+	position: absolute;
+	top: 0px;
+	height: 100%;
+	width: auto;
+	margin: 0;
+	padding: 0;
+}
+img#setting_clear{
+	display: block;
+	position: absolute;
+	top: 0px;
+	height: 100%;
+	width: auto;
+	margin: 0;
+	padding: 0;
+}
+img#setting_help{
+	display: block;
+	position: absolute;
+	top: 0px;
+	height: 100%;
+	width: auto;
+	margin: 0;
+	padding: 0;
+}
+img#setting_close{
+	display: block;
+	position: absolute;
+	top: 0px;
+	height: 100%;
+	width: auto;
+	margin: 0;
+	padding: 0;
+}
+
+canvas#clockcanvas{
+	display: block;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	/*top: 110px;
+	left: 40px;
+	width: 300px;
+	height: 300px;*/
+}
+
+canvas#clockcanvas2{
+	display: block;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	/*top: 110px;
+	left: 40px;
+	width: 300px;
+	height: 300px;*/
+}
+
+canvas#clockcanvas_frame{
+	display: block;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	/*top: 110px;
+	left: 40px;
+	width: 300px;
+	height: 300px;*/
+}
+
+/*div#timerBody{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 800px;
+	height: 600px;
+	margin-left: auto;
+	margin-right: auto;
+}*/
+
+/*div#timerSettingDetails{
+	width: 100%;
+	background-color: "#FFFFFF";
+}
+*/
+
+form#form {
+   margin-top: 700px;
+   text-align: left;
+}
+
+#anotherWindow{
+   visibility: hidden;
+}
+   
+div.presetbuttondiv input{
+   height: 30px;
+   font-size: 12pt;
+}
+
+input#startbutton {
+   width: 100px;
+   height: 40px;
+   margin-top: 50px;
+   margin-bottom: 10px;
+}
+
+input#showbutton {
+   width: 100px;
+   height: 40px;
+   margin-top: 10px;
+   margin-bottom: 100px;
+}
+
+dl {
+   text-align: left;
+   margin-left: 10px;
+}
+
+dt {
+   margin-top: 20px;
+}
+dd {
+   margin-top: 7px;
+}
+
+
+
+dl input.time {
+   width: 2em;
+}
+
+dl input.color {
+   width: 5em;
+}
+
+
+dl input.string {
+   width: 15em;
+}

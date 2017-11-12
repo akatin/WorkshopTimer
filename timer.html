@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+	<title>Workshop Timer ver.0 with HTML5 by akatin</title>
+	<meta name="description" content="" />
+	<meta name="keyword" content=""/>
+	<link rel="stylesheet" href="timer.css" type="text/css">
+	<script type="text/javascript" src="timer.js"></script>
+	<script type="text/javascript" src="jscolor/jscolor.js"></script>
+</head>
+<body id = "body">
+
+<div id = "timerBody">
+   <canvas id="clockcanvas"></canvas>
+   <canvas id="clockcanvas2"></canvas>
+   <canvas id="clockcanvas_frame"></canvas>
+   <div id="timerdiv"></div>
+   <div id="explanation"></div>
+   <div id = "control">
+       <div id = "ctrl_parts">
+            <img id = "ctrl_start_pause" />
+            <img id = "ctrl_reset"/>
+            <div id = "ctrl_numbers">
+                <img id = "ctrl_1"/>
+                <img id = "ctrl_2"/>
+                <img id = "ctrl_3"/>
+                <img id = "ctrl_4"/>
+                <img id = "ctrl_5"/>
+                <img id = "ctrl_6"/>
+                <img id = "ctrl_7"/>
+                <img id = "ctrl_8"/>
+                <img id = "ctrl_9"/>
+                <img id = "ctrl_0"/>
+            </div>
+            <img id = "ctrl_open_setting"/>
+       </div>
+       <div id = "setting_parts">
+            <img id = "setting_soundtest" />
+            <img id = "setting_openwindow"/>
+            <!-- <img id = "setting_change_lang"/> -->
+            <img id = "setting_save"/>
+            <img id = "setting_clear"/>
+            <img id = "setting_help"/>
+            <img id = "setting_close"/>
+       </div>
+   </div>
+</div>
+
+<audio id = "audio1" preload="auto">
+  <source src = "./sound/Bell1.wav" type="audio/wave">
+  <source src = "./sound/Bell1.mp3" type="audio/mp3">
+  <source src = "./sound/Bell1.ogg" type="audio/ogg">
+  HTML5を読める新しいブラウザを使って下さい。
+</audio>
+
+<audio id = "audio2" preload="auto">
+  <source src = "./sound/Bell2.wav" type="audio/wave">
+  <source src = "./sound/Bell2.mp3" type="audio/mp3">
+  <source src = "./sound/Bell2.ogg" type="audio/ogg">
+  HTML5を読める新しいブラウザを使って下さい。
+</audio>
+
+<audio id = "audio3" preload="auto">
+  <source src = "./sound/Bell3.wav" type="audio/wave">
+  <source src = "./sound/Bell3.mp3" type="audio/mp3">
+  <source src = "./sound/Bell3.ogg" type="audio/ogg">
+  HTML5を読める新しいブラウザを使って下さい。
+</audio>
+
+
+<!--
+<form id="form" name="Buttons">
+</form>
+-->
+
+
+
+<div id="timerSettingDetails">
+
+<form name="timerSetting">
+
+<p>スタートから何分何秒経過後にアラームを鳴らしますか？ alarm 1 &lt; alarm 2 &lt; alarm 3 の順で時間を長くしてください</p>
+<dl>
+
+<dt>alarm 1 [発表開始から1回目のアラームまでの時間]</dt>
+<dd>
+<input type="text" value="10" class = "time" name="timerLengthMin1" /> min
+<input type="text" value="0" class = "time" name="timerLengthSec1" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="Presentation" name ="string1" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check1" checked />）
+</dd>
+<dt>alarm 2 [発表開始から2回目のアラームまでの時間]</dt>
+<dd>
+  <input type="text" value="15" class = "time" name="timerLengthMin2" /> min
+  <input type="text" value="0" class = "time" name="timerLengthSec2" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="Presentation" name ="string2" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check2" checked />）
+
+</dd>
+<dt>alarm 3 [発表開始から3回目のアラームまでの時間]</dt>
+<dd>
+  <input type="text" value="20" class = "time" name="timerLengthMin3" /> min
+  <input type="text" value="0" class = "time" name="timerLengthSec3" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="Discussion" name ="string3" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check3" checked />）
+</dd>
+<dt>終了後何分何秒置きに催促ベルを鳴らす?
+（負の値を入力すると、タイマーを最初から繰り返します。（リピートモード））
+</dt>
+<dd>
+  <input type="text" value="1" class = "time" name="timerLengthMinRep" /> min
+  <input type="text" value="0" class = "time" name="timerLengthSecRep" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="Time Over" name ="string4" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check4" checked />
+</dd>
+<dt>残り時間の表示方法の設定:</dt>
+<dd>alarm 1が鳴るまではalarm 1までの残り時間を表示する<input type="checkbox" name = "reset1" /></dd>
+<dd>alarm 2が鳴るまではalarm 2までの残り時間を表示する<input type="checkbox" name = "reset2" checked /></dd>
+<dt>色の設定 &nbsp;&nbsp; プリセット
+    <select name="colorSetting" size="1">
+    <option value="default">標準</option>
+    <option value="inverse">反転</option>
+    <option value="monochrome">モノクロ</option>
+    </select>
+</dt>
+<dd> 背景色:<input value="#FFFFFF" class = "color {hash:true}" id="backgroundColor" name="backgroundColor" /> &nbsp;&nbsp;
+    時計の枠の色:<input value="#000000" class = "color {hash:true}" id="clockFrameColor" name="clockFrameColor"/> </dd>
+<dd>文字色1:  <input class = "color {hash:true}" value="#007700" name ="color1" /> &nbsp;&nbsp;
+    文字色2:  <input class = "color {hash:true}" value="#0000FF" name ="color2" /> &nbsp;&nbsp;
+    文字色3:  <input class = "color {hash:true}" value="#FF00FF" name ="color3" /> &nbsp;&nbsp;
+    文字色タイマー終了後:  <input class = "color {hash:true}" value="#FF0000" name ="color4" />  </dd>
+<dd>♪の色（音が鳴る前）: <input value="#FF4500" class = "color {hash:true}" id="musicalNoteColor1" name="musicalNoteColor1" />&nbsp;&nbsp;
+    ♪の色（音が鳴った後）: <input value="#999999" class = "color {hash:true}" id="musicalNoteColor2" name="musicalNoteColor2" />
+</dd>
+
+</dl>
+
+<input type="hidden" value="0" class = "anotherWindowStatus" id = "anotherWindowStatus" name="anotherWindowStatus" />
+
+
+</form>
+
+
+<form name="timePreset1">
+<div class="presetbuttondiv">
+<!-- <input type="button" value=" use preset 1 " id="presetbutton1" name="presetbutton1"/> -->
+<input type="button" id="detailbutton1" name="detailbutton1"/>
+</div>
+
+
+
+<dl id = "preset1detail">
+<dt>alarm 1 [発表開始から1回目のアラームまでの時間]</dt>
+<dd>
+<input type="text" value="5" class = "time" name="timerLengthMin1" /> min
+<input type="text" value="0" class = "time" name="timerLengthSec1" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="talk" name ="string1" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check1" checked />）
+</dd>
+<dt>alarm 2 [発表開始から2回目のアラームまでの時間]</dt>
+<dd>
+  <input type="text" value="10" class = "time" name="timerLengthMin2" /> min
+  <input type="text" value="0" class = "time" name="timerLengthSec2" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="talk (last 5 min)" name ="string2" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check2" checked />）
+
+</dd>
+<dt>alarm 3 [発表開始から3回目のアラームまでの時間]</dt>
+<dd>
+  <input type="text" value="15" class = "time" name="timerLengthMin3" /> min
+  <input type="text" value="0" class = "time" name="timerLengthSec3" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="discussion" name ="string3" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check3" checked />）
+</dd>
+<dt>終了後何分何秒置きに催促ベルを鳴らす?
+（負の値を入力すると、タイマーを最初から繰り返します。（リピートモード））
+</dt>
+<dd>
+  <input type="text" value="1" class = "time" name="timerLengthMinRep" /> min
+  <input type="text" value="0" class = "time" name="timerLengthSecRep" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="time over" name ="string4" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check4" />
+</dd>
+<dt>残り時間の表示方法の設定:</dt>
+<dd>alarm 1が鳴るまではalarm 1までの残り時間を表示する<input type="checkbox" name = "reset1" /></dd>
+<dd>alarm 2が鳴るまではalarm 2までの残り時間を表示する<input type="checkbox" name = "reset2" checked /></dd>
+</dl>
+</form>
+
+
+
+
+
+<form name="timePreset2">
+<div class="presetbuttondiv">
+<!-- <input type="button" value=" use preset 2 " id="presetbutton2" name="presetbutto2"/> -->
+<input type="button" id="detailbutton2" name="detailbutton2"/>
+</div>
+
+
+
+<dl id = "preset2detail">
+<dt>alarm 1 [発表開始から1回目のアラームまでの時間]</dt>
+<dd>
+<input type="text" value="10" class = "time" name="timerLengthMin1" /> min
+<input type="text" value="0" class = "time" name="timerLengthSec1" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="talk" name ="string1" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check1" checked />）
+</dd>
+<dt>alarm 2 [発表開始から2回目のアラームまでの時間]</dt>
+<dd>
+  <input type="text" value="15" class = "time" name="timerLengthMin2" /> min
+  <input type="text" value="0" class = "time" name="timerLengthSec2" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="talk (last 5 min)" name ="string2" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check2" checked />）
+
+</dd>
+<dt>alarm 3 [発表開始から3回目のアラームまでの時間]</dt>
+<dd>
+  <input type="text" value="20" class = "time" name="timerLengthMin3" /> min
+  <input type="text" value="0" class = "time" name="timerLengthSec3" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="discussion" name ="string3" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check3" checked />）
+</dd>
+<dt>終了後何分何秒置きに催促ベルを鳴らす?
+（負の値を入力すると、タイマーを最初から繰り返します。（リピートモード））
+</dt>
+<dd>
+  <input type="text" value="1" class = "time" name="timerLengthMinRep" /> min
+  <input type="text" value="0" class = "time" name="timerLengthSecRep" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="time over" name ="string4" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check4" />
+</dd>
+<dt>残り時間の表示方法の設定:</dt>
+<dd>alarm 1が鳴るまではalarm 1までの残り時間を表示する<input type="checkbox" name = "reset1" /></dd>
+<dd>alarm 2が鳴るまではalarm 2までの残り時間を表示する<input type="checkbox" name = "reset2" checked /></dd>
+</dl>
+</form>
+
+
+
+
+<form name="timePreset3">
+<div class="presetbuttondiv">
+<!-- <input type="button" value=" use preset 3 " id="presetbutton3" name="presetbutto3"/> -->
+<input type="button" id="detailbutton3" name="detailbutton3"/>
+</div>
+
+
+
+<dl id = "preset3detail">
+<dt>alarm 1 [発表開始から1回目のアラームまでの時間]</dt>
+<dd>
+<input type="text" value="18" class = "time" name="timerLengthMin1" /> min
+<input type="text" value="0" class = "time" name="timerLengthSec1" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="talk" name ="string1" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check1" checked />）
+</dd>
+<dt>alarm 2 [発表開始から2回目のアラームまでの時間]</dt>
+<dd>
+  <input type="text" value="23" class = "time" name="timerLengthMin2" /> min
+  <input type="text" value="0" class = "time" name="timerLengthSec2" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="talk (last 5 min)" name ="string2" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check2" checked />）
+
+</dd>
+<dt>alarm 3 [発表開始から3回目のアラームまでの時間]</dt>
+<dd>
+  <input type="text" value="30" class = "time" name="timerLengthMin3" /> min
+  <input type="text" value="0" class = "time" name="timerLengthSec3" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="discussion" name ="string3" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check3" checked />）
+</dd>
+<dt>終了後何分何秒置きに催促ベルを鳴らす?
+（負の値を入力すると、タイマーを最初から繰り返します。（リピートモード））
+</dt>
+<dd>
+  <input type="text" value="1" class = "time" name="timerLengthMinRep" /> min
+  <input type="text" value="0" class = "time" name="timerLengthSecRep" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="time over" name ="string4" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check4" />
+</dd>
+<dt>残り時間の表示方法の設定:</dt>
+<dd>alarm 1が鳴るまではalarm 1までの残り時間を表示する<input type="checkbox" name = "reset1" /></dd>
+<dd>alarm 2が鳴るまではalarm 2までの残り時間を表示する<input type="checkbox" name = "reset2" checked /></dd>
+</dl>
+</form>
+
+
+
+<form name="timePreset4">
+<div class="presetbuttondiv">
+<!-- <input type="button" value=" use preset 4 " id="presetbutton4" name="presetbutto4"/> -->
+<input type="button" id="detailbutton4" name="detailbutton4"/>
+</div>
+
+
+
+<dl id = "preset4detail">
+<dt>alarm 1 [発表開始から1回目のアラームまでの時間]</dt>
+<dd>
+<input type="text" value="25" class = "time" name="timerLengthMin1" /> min
+<input type="text" value="00" class = "time" name="timerLengthSec1" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="talk" name ="string1" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check1" checked />）
+</dd>
+<dt>alarm 2 [発表開始から2回目のアラームまでの時間]</dt>
+<dd>
+  <input type="text" value="30" class = "time" name="timerLengthMin2" /> min
+  <input type="text" value="00" class = "time" name="timerLengthSec2" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="talk (last 5 min)" name ="string2" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check2" checked />）
+
+</dd>
+<dt>alarm 3 [発表開始から3回目のアラームまでの時間]</dt>
+<dd>
+  <input type="text" value="40" class = "time" name="timerLengthMin3" /> min
+  <input type="text" value="00" class = "time" name="timerLengthSec3" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="discussion" name ="string3" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check3" checked />）
+</dd>
+<dt>終了後何分何秒置きに催促ベルを鳴らす?
+（負の値を入力すると、タイマーを最初から繰り返します。（リピートモード））
+</dt>
+<dd>
+  <input type="text" value="1" class = "time" name="timerLengthMinRep" /> min
+  <input type="text" value="0" class = "time" name="timerLengthSecRep" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="time over" name ="string4" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check4"  />
+</dd>
+<dt>残り時間の表示方法の設定:</dt>
+<dd>alarm 1が鳴るまではalarm 1までの残り時間を表示する<input type="checkbox" name = "reset1" /></dd>
+<dd>alarm 2が鳴るまではalarm 2までの残り時間を表示する<input type="checkbox" name = "reset2" checked /></dd>
+</dl>
+</form>
+
+
+
+
+<form name="timePreset5">
+<div class="presetbuttondiv">
+<!-- <input type="button" value=" use preset 4 " id="presetbutton4" name="presetbutto4"/> -->
+<input type="button" id="detailbutton5" name="detailbutton5"/>
+</div>
+
+<dl id = "preset5detail">
+<dt>alarm 1 [発表開始から1回目のアラームまでの時間]</dt>
+<dd>
+<input type="text" value="40" class = "time" name="timerLengthMin1" /> min
+<input type="text" value="00" class = "time" name="timerLengthSec1" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="talk" name ="string1" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check1" checked />）
+</dd>
+<dt>alarm 2 [発表開始から2回目のアラームまでの時間]</dt>
+<dd>
+  <input type="text" value="45" class = "time" name="timerLengthMin2" /> min
+  <input type="text" value="00" class = "time" name="timerLengthSec2" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="talk (last 5 min)" name ="string2" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check2" checked />）
+
+</dd>
+<dt>alarm 3 [発表開始から3回目のアラームまでの時間]</dt>
+<dd>
+  <input type="text" value="60" class = "time" name="timerLengthMin3" /> min
+  <input type="text" value="00" class = "time" name="timerLengthSec3" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="discussion" name ="string3" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check3" checked />）
+</dd>
+<dt>終了後何分何秒置きに催促ベルを鳴らす?
+（負の値を入力すると、タイマーを最初から繰り返します。（リピートモード））
+</dt>
+<dd>
+  <input type="text" value="1" class = "time" name="timerLengthMinRep" /> min
+  <input type="text" value="0" class = "time" name="timerLengthSecRep" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="time over" name ="string4" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check4"  />
+</dd>
+<dt>残り時間の表示方法の設定:</dt>
+<dd>alarm 1が鳴るまではalarm 1までの残り時間を表示する<input type="checkbox" name = "reset1" /></dd>
+<dd>alarm 2が鳴るまではalarm 2までの残り時間を表示する<input type="checkbox" name = "reset2" checked /></dd>
+</dl>
+</form>
+
+
+
+<form name="timePreset6">
+<div class="presetbuttondiv">
+<input type="button" id="detailbutton6" name="detailbutton6"/>
+</div>
+
+<dl id = "preset6detail">
+<dt>alarm 1 [発表開始から1回目のアラームまでの時間]</dt>
+<dd>
+<input type="text" value="10" class = "time" name="timerLengthMin1" /> min
+<input type="text" value="00" class = "time" name="timerLengthSec1" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="1st part" name ="string1" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check1" checked />）
+</dd>
+<dt>alarm 2 [発表開始から2回目のアラームまでの時間]</dt>
+<dd>
+  <input type="text" value="20" class = "time" name="timerLengthMin2" /> min
+  <input type="text" value="00" class = "time" name="timerLengthSec2" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="2nd part" name ="string2" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check2" checked />）
+
+</dd>
+<dt>alarm 3 [発表開始から3回目のアラームまでの時間]</dt>
+<dd>
+  <input type="text" value="30" class = "time" name="timerLengthMin3" /> min
+  <input type="text" value="0" class = "time" name="timerLengthSec3" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="3rd part" name ="string3" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check3" checked />）
+</dd>
+<dt>終了後何分何秒置きに催促ベルを鳴らす?
+（負の値を入力すると、タイマーを最初から繰り返します。（リピートモード））
+</dt>
+<dd>
+  <input type="text" value="1" class = "time" name="timerLengthMinRep" /> min
+  <input type="text" value="0" class = "time" name="timerLengthSecRep" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="time over" name ="string4" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check4"  />
+</dd>
+<dt>残り時間の表示方法の設定:</dt>
+<dd>alarm 1が鳴るまではalarm 1までの残り時間を表示する<input type="checkbox" name = "reset1" checked /></dd>
+<dd>alarm 2が鳴るまではalarm 2までの残り時間を表示する<input type="checkbox" name = "reset2" checked /></dd>
+</dl>
+</form>
+
+
+<form name="timePreset7">
+<div class="presetbuttondiv">
+<!-- <input type="button" value=" use preset 4 " id="presetbutton4" name="presetbutto4"/> -->
+<input type="button" id="detailbutton7" name="detailbutton7"/>
+</div>
+
+<dl id = "preset7detail">
+<dt>alarm 1 [発表開始から1回目のアラームまでの時間]</dt>
+<dd>
+<input type="text" value="10" class = "time" name="timerLengthMin1" /> min
+<input type="text" value="00" class = "time" name="timerLengthSec1" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="talk" name ="string1" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check1" checked />）
+</dd>
+<dt>alarm 2 [発表開始から2回目のアラームまでの時間]</dt>
+<dd>
+  <input type="text" value="20" class = "time" name="timerLengthMin2" /> min
+  <input type="text" value="00" class = "time" name="timerLengthSec2" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="talk (last 20 min)" name ="string2" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check2" checked />）
+
+</dd>
+<dt>alarm 3 [発表開始から3回目のアラームまでの時間]</dt>
+<dd>
+  <input type="text" value="30" class = "time" name="timerLengthMin3" /> min
+  <input type="text" value="00" class = "time" name="timerLengthSec3" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="talk (last 10 min)" name ="string3" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check3" checked />）
+</dd>
+<dt>終了後何分何秒置きに催促ベルを鳴らす?
+（負の値を入力すると、タイマーを最初から繰り返します。（リピートモード））
+</dt>
+<dd>
+  <input type="text" value="1" class = "time" name="timerLengthMinRep" /> min
+  <input type="text" value="0" class = "time" name="timerLengthSecRep" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="time over" name ="string4" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check4"  />
+</dd>
+<dt>残り時間の表示方法の設定:</dt>
+<dd>alarm 1が鳴るまではalarm 1までの残り時間を表示する<input type="checkbox" name = "reset1" /></dd>
+<dd>alarm 2が鳴るまではalarm 2までの残り時間を表示する<input type="checkbox" name = "reset2" /></dd>
+</dl>
+</form>
+
+
+
+<form name="timePreset8">
+<div class="presetbuttondiv">
+<input type="button" id="detailbutton8" name="detailbutton8"/>
+</div>
+
+<dl id = "preset8detail">
+<dt>alarm 1 [発表開始から1回目のアラームまでの時間]</dt>
+<dd>
+<input type="text" value="15" class = "time" name="timerLengthMin1" /> min
+<input type="text" value="00" class = "time" name="timerLengthSec1" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="talk" name ="string1" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check1" />）
+</dd>
+<dt>alarm 2 [発表開始から2回目のアラームまでの時間]</dt>
+<dd>
+  <input type="text" value="20" class = "time" name="timerLengthMin2" /> min
+  <input type="text" value="00" class = "time" name="timerLengthSec2" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="talk (last 5 min)" name ="string2" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check2" />）
+
+</dd>
+<dt>alarm 3 [発表開始から3回目のアラームまでの時間]</dt>
+<dd>
+  <input type="text" value="30" class = "time" name="timerLengthMin3" /> min
+  <input type="text" value="00" class = "time" name="timerLengthSec3" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="discussion" name ="string3" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check3" checked />）
+</dd>
+<dt>終了後何分何秒置きに催促ベルを鳴らす?
+（負の値を入力すると、タイマーを最初から繰り返します。（リピートモード））
+</dt>
+<dd>
+  <input type="text" value="1" class = "time" name="timerLengthMinRep" /> min
+  <input type="text" value="0" class = "time" name="timerLengthSecRep" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="time over" name ="string4" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check4"  />
+</dd>
+<dt>残り時間の表示方法の設定:</dt>
+<dd>alarm 1が鳴るまではalarm 1までの残り時間を表示する<input type="checkbox" name = "reset1" /></dd>
+<dd>alarm 2が鳴るまではalarm 2までの残り時間を表示する<input type="checkbox" name = "reset2" checked /></dd>
+</dl>
+</form>
+
+
+
+<form name="timePreset9">
+<div class="presetbuttondiv">
+<input type="button" id="detailbutton9" name="detailbutton9"/>
+</div>
+
+<dl id = "preset9detail">
+<dt>alarm 1 [発表開始から1回目のアラームまでの時間]</dt>
+<dd>
+<input type="text" value="0" class = "time" name="timerLengthMin1" /> min
+<input type="text" value="50" class = "time" name="timerLengthSec1" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="presentation" name ="string1" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check1" />）
+</dd>
+<dt>alarm 2 [発表開始から2回目のアラームまでの時間]</dt>
+<dd>
+  <input type="text" value="0" class = "time" name="timerLengthMin2" /> min
+  <input type="text" value="55" class = "time" name="timerLengthSec2" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="last 10 sec" name ="string2" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check2" />）
+
+</dd>
+<dt>alarm 3 [発表開始から3回目のアラームまでの時間]</dt>
+<dd>
+  <input type="text" value="1" class = "time" name="timerLengthMin3" /> min
+  <input type="text" value="0" class = "time" name="timerLengthSec3" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="last 5 sec" name ="string3" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check3" checked />）
+</dd>
+<dt>終了後何分何秒置きに催促ベルを鳴らす?
+（負の値を入力すると、タイマーを最初から繰り返します。（リピートモード））
+</dt>
+<dd>
+  <input type="text" value="1" class = "time" name="timerLengthMinRep" /> min
+  <input type="text" value="0" class = "time" name="timerLengthSecRep" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="time over" name ="string4" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check4"  />
+</dd>
+<dt>残り時間の表示方法の設定:</dt>
+<dd>alarm 1が鳴るまではalarm 1までの残り時間を表示する<input type="checkbox" name = "reset1" /></dd>
+<dd>alarm 2が鳴るまではalarm 2までの残り時間を表示する<input type="checkbox" name = "reset2" /></dd>
+</dl>
+</form>
+
+
+<form name="timePreset0">
+<div class="presetbuttondiv">
+<input type="button" id="detailbutton0" name="detailbutton0"/>
+</div>
+
+<dl id = "preset0detail">
+<dt>alarm 1 [発表開始から1回目のアラームまでの時間]</dt>
+<dd>
+<input type="text" value="0" class = "time" name="timerLengthMin1" /> min
+<input type="text" value="50" class = "time" name="timerLengthSec1" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="presentation" name ="string1" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check1" />）
+</dd>
+<dt>alarm 2 [発表開始から2回目のアラームまでの時間]</dt>
+<dd>
+  <input type="text" value="0" class = "time" name="timerLengthMin2" /> min
+  <input type="text" value="55" class = "time" name="timerLengthSec2" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="last 10 sec" name ="string2" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check2" />）
+
+</dd>
+<dt>alarm 3 [発表開始から3回目のアラームまでの時間]</dt>
+<dd>
+  <input type="text" value="1" class = "time" name="timerLengthMin3" /> min
+  <input type="text" value="0" class = "time" name="timerLengthSec3" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="last 5 sec" name ="string3" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check3" checked />）
+</dd>
+<dt>終了後何分何秒置きに催促ベルを鳴らす?
+（負の値を入力すると、タイマーを最初から繰り返します。（リピートモード））
+</dt>
+<dd>
+  <input type="text" value="-1" class = "time" name="timerLengthMinRep" /> min
+  <input type="text" value="0" class = "time" name="timerLengthSecRep" /> sec
+&nbsp;&nbsp;（表示文字列:  <input type="text" class = "string" value="time over" name ="string4" />
+&nbsp;&nbsp; アラームを鳴らす? <input type="checkbox" name = "check4"  />
+</dd>
+<dt>残り時間の表示方法の設定:</dt>
+<dd>alarm 1が鳴るまではalarm 1までの残り時間を表示する<input type="checkbox" name = "reset1" /></dd>
+<dd>alarm 2が鳴るまではalarm 2までの残り時間を表示する<input type="checkbox" name = "reset2" /></dd>
+</dl>
+</form>
+
+
+</div>
+
+
+
+</body>
+</html>
